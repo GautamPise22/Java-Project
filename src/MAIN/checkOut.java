@@ -3,7 +3,7 @@ package MAIN;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.util.Arrays;
+import java.util.*;
 
 public class checkOut extends JFrame implements ActionListener {
     JTextField tf;
@@ -23,11 +23,10 @@ public class checkOut extends JFrame implements ActionListener {
         bg = new JLabel(new ImageIcon(originalImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH)));
         bg.setBounds(0, 0, getWidth(), getHeight());
 
-        // Add component listener to resize the background image when the window is resized
+        // Add component listener to resize the background image and adjust component positions when the window is resized
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                // Get new dimensions of the window
                 int newWidth = getWidth();
                 int newHeight = getHeight();
 
@@ -35,6 +34,9 @@ public class checkOut extends JFrame implements ActionListener {
                 ImageIcon resizedImage = new ImageIcon(originalImage.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH));
                 bg.setIcon(resizedImage);
                 bg.setBounds(0, 0, newWidth, newHeight);
+
+                // Center components
+                centerComponents(newWidth, newHeight);
             }
         });
 
@@ -47,11 +49,14 @@ public class checkOut extends JFrame implements ActionListener {
         l.setForeground(Color.WHITE);
         b.setBackground(Color.GREEN);
 
+<<<<<<< HEAD
         // Set bounds for each component
         l.setBounds(20, 120, 200, 30);
         tf.setBounds(220, 120, 150, 30);
         b.setBounds(150, 170, 100, 30);
 
+=======
+>>>>>>> 9c8e15d5ad84fc52d52a7e824336982c1fde21ff
         // Add components to the frame
         add(l);
         add(tf);
@@ -60,6 +65,27 @@ public class checkOut extends JFrame implements ActionListener {
 
         // Add action listener to the button
         b.addActionListener(this);
+
+        // Initial centering of components
+        centerComponents(getWidth(), getHeight());
+    }
+
+    private void centerComponents(int width, int height) {
+        // Calculate positions for components to be centered
+        int labelWidth = l.getPreferredSize().width;
+        int labelHeight = l.getPreferredSize().height;
+        int textFieldWidth = tf.getPreferredSize().width;
+        int textFieldHeight = tf.getPreferredSize().height;
+        int buttonWidth = b.getPreferredSize().width;
+        int buttonHeight = b.getPreferredSize().height;
+
+        int centerX = width / 2;
+        int centerY = height / 2;
+
+        // Set bounds for each component
+        l.setBounds(centerX - labelWidth / 2, centerY - labelHeight / 2 - 40, labelWidth, labelHeight);
+        tf.setBounds(centerX - textFieldWidth / 2, centerY - textFieldHeight / 2, textFieldWidth, textFieldHeight);
+        b.setBounds(centerX - buttonWidth / 2, centerY - buttonHeight / 2 + 40, buttonWidth, buttonHeight);
     }
 
     @Override
