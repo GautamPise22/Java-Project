@@ -19,7 +19,7 @@ public class checkOut extends JFrame implements ActionListener {
         setLayout(null); // Using null layout, which requires manual placement of components
 
         // Load and set background image
-        ImageIcon originalImage = new ImageIcon("Java-Project\\images\\checkOutHome.png");
+        ImageIcon originalImage = new ImageIcon("images\\checkOutHome.png");
         bg = new JLabel(new ImageIcon(originalImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH)));
         bg.setBounds(0, 0, getWidth(), getHeight());
 
@@ -44,11 +44,13 @@ public class checkOut extends JFrame implements ActionListener {
         tf = new JTextField(10);
         b = new JButton("Submit");
         l = new JLabel("Enter Room Number to Leave: ");
+        l.setForeground(Color.WHITE);
+        b.setBackground(Color.GREEN);
 
         // Set bounds for each component
-        l.setBounds(20, 20, 200, 30);
-        tf.setBounds(220, 20, 150, 30);
-        b.setBounds(150, 70, 100, 30);
+        l.setBounds(20, 120, 200, 30);
+        tf.setBounds(220, 120, 150, 30);
+        b.setBounds(150, 170, 100, 30);
 
         // Add components to the frame
         add(l);
