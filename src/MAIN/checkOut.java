@@ -49,14 +49,12 @@ public class checkOut extends JFrame implements ActionListener {
         l.setForeground(Color.WHITE);
         b.setBackground(Color.GREEN);
 
-<<<<<<< HEAD
+
         // Set bounds for each component
         l.setBounds(20, 120, 200, 30);
         tf.setBounds(220, 120, 150, 30);
         b.setBounds(150, 170, 100, 30);
 
-=======
->>>>>>> 9c8e15d5ad84fc52d52a7e824336982c1fde21ff
         // Add components to the frame
         add(l);
         add(tf);
