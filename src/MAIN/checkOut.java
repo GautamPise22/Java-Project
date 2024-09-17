@@ -17,6 +17,10 @@ public class checkOut extends JFrame implements ActionListener{
 
         bg=new JLabel(new ImageIcon("C:\\Users\\koshe\\Desktop\\Java MP\\Java-Project\\images\\homeback.png"));
 
+        ImageIcon originalImage = new ImageIcon("C:\\\\Users\\\\koshe\\\\Desktop\\\\Java MP\\\\Java-Project\\\\images\\\\homeback.png");
+        bg = new JLabel(new ImageIcon(originalImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH)));
+        bg.setBounds(0, 0, getWidth(), getHeight());
+        
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -34,9 +38,7 @@ public class checkOut extends JFrame implements ActionListener{
 
         Arrays.fill(roomnumber, 0);
 
-        ImageIcon originalImage = new ImageIcon("C:\\\\Users\\\\koshe\\\\Desktop\\\\Java MP\\\\Java-Project\\\\images\\\\homeback.png");
-        bg = new JLabel(new ImageIcon(originalImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH)));
-        bg.setBounds(0, 0, getWidth(), getHeight());
+        
 
         tf= new JTextField(10);
         b=new JButton("Submit");
