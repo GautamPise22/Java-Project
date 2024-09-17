@@ -19,7 +19,7 @@ public class checkOut extends JFrame implements ActionListener {
         setLayout(null); // Using null layout, which requires manual placement of components
 
         // Load and set background image
-        ImageIcon originalImage = new ImageIcon("images\\checkOutHome.png");
+        ImageIcon originalImage = new ImageIcon("Java-Project\\images\\checkOutHome.png");
         bg = new JLabel(new ImageIcon(originalImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH)));
         bg.setBounds(0, 0, getWidth(), getHeight());
 
