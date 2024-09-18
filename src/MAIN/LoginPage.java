@@ -18,7 +18,7 @@ public class LoginPage extends JFrame {
         setLayout(new BorderLayout());
 
         // Create a label for the background image
-        backgroundLabel = new JLabel(new ImageIcon("green-natural-background-vector-illustration-59110.jpg")); // Replace with your image path
+        backgroundLabel = new JLabel(new ImageIcon("images\\Login.jpg")); // Replace with your image path
         backgroundLabel.setLayout(new GridBagLayout()); // Use layout on JLabel to place the form
         add(backgroundLabel); // Add the label directly to the frame
 
