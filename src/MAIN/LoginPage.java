@@ -13,71 +13,82 @@ public class LoginPage extends JFrame {
     private JLabel background, l1, l2;
 
     public LoginPage() {
-    
+
         // Set up the frame
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         // Load and scale the background image
-        ImageIcon originalImage = new ImageIcon("Java-Project\\\\images\\\\Login.jpg");
+        ImageIcon originalImage = new ImageIcon("Java-Project\\images\\n" + //
+                        "ewlog.jpg");
         background = new JLabel(new ImageIcon(originalImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH)));
-    
-        // Use GridBagLayout to place components over the background
-        background.setLayout(new GridBagLayout());
-    
-        // Create a panel for the login form
-        JPanel loginPanel = new JPanel(new GridBagLayout());
-        loginPanel.setBackground(Color.white);
-        loginPanel.setOpaque(true);
-    
-        // Set GridBagConstraints for form components
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
+
+        // Set the background layout as BorderLayout so components can be positioned relative to edges
+        background.setLayout(new BorderLayout());
+
+        // Create a panel for the login form with a vertical BoxLayout
+        JPanel loginPanel = new JPanel();
+        loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.Y_AXIS));
+        loginPanel.setBackground(new Color(255, 255, 255, 180)); // Semi-transparent background to show the image behind
+        loginPanel.setMaximumSize(new Dimension(250, 200)); // Set maximum size for the login panel
+        loginPanel.setPreferredSize(new Dimension(250, 200)); // Set preferred size for the panel
+
+        // Set padding for the components inside the login panel
+        loginPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Top, left, bottom, right padding
 
         // Add username label and text field
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.LINE_END;
         l1 = new JLabel("Username:");
         l1.setForeground(Color.green); // Set font color
-        loginPanel.add(l1, gbc);
+        l1.setAlignmentX(Component.CENTER_ALIGNMENT); // Center alignment
+        loginPanel.add(l1);
+        loginPanel.add(Box.createVerticalStrut(10)); // Space between components
 
-        gbc.gridx = 1;
         usernameField = new JTextField(20);
-        loginPanel.add(usernameField, gbc);
-    
+        usernameField.setMaximumSize(new Dimension(200, 30)); // Set field size
+        loginPanel.add(usernameField);
+        loginPanel.add(Box.createVerticalStrut(10)); // Space between components
+
         // Add password label and password field
-        gbc.gridx = 0;
-        gbc.gridy = 1;
         l2 = new JLabel("Password:");
         l2.setForeground(Color.green); // Set font color
-        loginPanel.add(l2, gbc);
+        l2.setAlignmentX(Component.CENTER_ALIGNMENT); // Center alignment
+        loginPanel.add(l2);
+        loginPanel.add(Box.createVerticalStrut(10)); // Space between components
 
-        gbc.gridx = 1;
         passwordField = new JPasswordField(20);
-        loginPanel.add(passwordField, gbc);
+        passwordField.setMaximumSize(new Dimension(200, 30)); // Set field size
+        loginPanel.add(passwordField);
+        loginPanel.add(Box.createVerticalStrut(20)); // Space between components
 
         // Add login button
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.LINE_START;
         loginButton = new JButton("Login");
         loginButton.setBackground(Color.green); // Button background color
         loginButton.setForeground(Color.black); // Button text color
+        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Center alignment
         loginButton.addActionListener(new LoginButtonListener());
-        loginPanel.add(loginButton, gbc);
-    
+        loginPanel.add(loginButton);
+
         // Add a border around the login panel
         Border border = new LineBorder(new Color(179, 245, 183), 4, true);
         loginPanel.setBorder(border);
-    
-        // Add the login panel on top of the background
-        background.add(loginPanel);
-    
+
+        // Create a wrapper panel to center the loginPanel horizontally and add vertical spacing
+        JPanel wrapperPanel = new JPanel();
+        wrapperPanel.setLayout(new BoxLayout(wrapperPanel, BoxLayout.Y_AXIS));
+        wrapperPanel.setOpaque(false); // Make the wrapper transparent to show the background
+
+        // Add vertical spacing between the top of the window and the login panel
+        wrapperPanel.add(Box.createVerticalStrut(150)); // Adjust the value to change the vertical spacing
+        wrapperPanel.add(loginPanel); // Add loginPanel to the wrapper centered
+        wrapperPanel.add(Box.createVerticalGlue()); // Add vertical glue to push content upwards
+
+        // Add the wrapper panel to the north of the background (centered horizontally)
+        background.add(wrapperPanel, BorderLayout.NORTH);
+
         // Add the background to the frame
-        add(background, BorderLayout.CENTER);
-    
+        add(background);
+
         // Listen for window resize to adjust background image
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -91,7 +102,7 @@ public class LoginPage extends JFrame {
         });
 
         // Make the frame visible
-        setVisible(true);       
+        setVisible(true);
     }
 
     // Action listener for the login button
