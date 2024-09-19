@@ -1,4 +1,4 @@
-package MAIN;
+package JavaMP;
 
 import javax.swing.*;
 import java.awt.*;

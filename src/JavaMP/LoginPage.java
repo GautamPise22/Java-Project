@@ -1,4 +1,4 @@
-package MAIN;
+package JavaMP;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,8 +20,7 @@ public class LoginPage extends JFrame {
         setLayout(new BorderLayout());
 
         // Load and scale the background image
-        ImageIcon originalImage = new ImageIcon("Java-Project\\images\\n" + //
-                        "ewlog.jpg");
+        ImageIcon originalImage = new ImageIcon("images\\newlog.jpg");
         background = new JLabel(new ImageIcon(originalImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH)));
 
         // Set the background layout as BorderLayout so components can be positioned relative to edges
@@ -79,7 +78,8 @@ public class LoginPage extends JFrame {
         wrapperPanel.setOpaque(false); // Make the wrapper transparent to show the background
 
         // Add vertical spacing between the top of the window and the login panel
-        wrapperPanel.add(Box.createVerticalStrut(150)); // Adjust the value to change the vertical spacing
+        wrapperPanel.add(Box.createVerticalStrut(100)); // Adjust the value to change the vertical spacing
+        wrapperPanel.add(Box.createHorizontalStrut(110)); // Adjust the value to change the horizontal spacing
         wrapperPanel.add(loginPanel); // Add loginPanel to the wrapper centered
         wrapperPanel.add(Box.createVerticalGlue()); // Add vertical glue to push content upwards
 
