@@ -62,15 +62,11 @@ public class LoginPage extends JFrame {
 
         // Add login button
         loginButton = new JButton("Login");
-        loginButton.setBackground(Color.green); // Button background color
+        loginButton.setBackground(new Color(60, 154, 166)); // Button background color
         loginButton.setForeground(Color.black); // Button text color
         loginButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Center alignment
         loginButton.addActionListener(new LoginButtonListener());
         loginPanel.add(loginButton);
-
-        // Add a border around the login panel
-        Border border = new LineBorder(new Color(179, 245, 183), 4, true);
-        loginPanel.setBorder(border);
 
         // Create a wrapper panel to center the loginPanel horizontally and add vertical spacing
         JPanel wrapperPanel = new JPanel();
@@ -78,8 +74,8 @@ public class LoginPage extends JFrame {
         wrapperPanel.setOpaque(false); // Make the wrapper transparent to show the background
 
         // Add vertical spacing between the top of the window and the login panel
-        wrapperPanel.add(Box.createVerticalStrut(100)); // Adjust the value to change the vertical spacing
-        wrapperPanel.add(Box.createHorizontalStrut(110)); // Adjust the value to change the horizontal spacing
+        wrapperPanel.add(Box.createVerticalStrut(150)); // Adjust the value to change the vertical spacing
+        wrapperPanel.add(Box.createHorizontalStrut(160)); // Adjust the value to change the horizontal spacing
         wrapperPanel.add(loginPanel); // Add loginPanel to the wrapper centered
         wrapperPanel.add(Box.createVerticalGlue()); // Add vertical glue to push content upwards
 

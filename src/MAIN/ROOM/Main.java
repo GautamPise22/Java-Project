@@ -1,4 +1,4 @@
-package MAIN;
+package MAIN.ROOM;
 import java.util.*;
 import MAIN.ROOM.Room;
 
