@@ -13,9 +13,12 @@ public class LoginPage extends JFrame {
     private JLabel backgroundLabel,l1,l2;
 
     public LoginPage() {
-        // Set up the frame
-        setSize(400, 300);
+        // Setting up the frame
+        setTitle("Hotel Management System");
+        setSize(800, 600); // Initial window size
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
         setLayout(new BorderLayout());
 
         // Create a label for the background image
@@ -84,12 +87,11 @@ public class LoginPage extends JFrame {
     private class LoginButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-// Handle the login button click event
-String username = usernameField.getText();
-String password = new String(passwordField.getPassword());
-System.out.println("Username: " + username + ", Password: " + password);
-// Add your login logic here
-}
+        // Handle the login button click event
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+        System.out.println("Username: " + username + ", Password: " + password);
+    }
 }
 
 public static void main(String[] args) {
