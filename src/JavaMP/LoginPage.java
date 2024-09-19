@@ -3,7 +3,7 @@ package JavaMP;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.border.*;
+
 
 public class LoginPage extends JFrame {
 
@@ -33,12 +33,11 @@ public class LoginPage extends JFrame {
         loginPanel.setMaximumSize(new Dimension(250, 200)); // Set maximum size for the login panel
         loginPanel.setPreferredSize(new Dimension(250, 200)); // Set preferred size for the panel
 
-        // Set padding for the components inside the login panel
-        loginPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Top, left, bottom, right padding
+       
 
         // Add username label and text field
         l1 = new JLabel("Username:");
-        l1.setForeground(Color.green); // Set font color
+        l1.setForeground(new Color(60, 154, 166)); // Set font color
         l1.setAlignmentX(Component.CENTER_ALIGNMENT); // Center alignment
         loginPanel.add(l1);
         loginPanel.add(Box.createVerticalStrut(10)); // Space between components
@@ -50,7 +49,7 @@ public class LoginPage extends JFrame {
 
         // Add password label and password field
         l2 = new JLabel("Password:");
-        l2.setForeground(Color.green); // Set font color
+        l2.setForeground(new Color(60, 154, 166)); // Set font color
         l2.setAlignmentX(Component.CENTER_ALIGNMENT); // Center alignment
         loginPanel.add(l2);
         loginPanel.add(Box.createVerticalStrut(10)); // Space between components
@@ -68,6 +67,7 @@ public class LoginPage extends JFrame {
         loginButton.addActionListener(new LoginButtonListener());
         loginPanel.add(loginButton);
 
+        
         // Create a wrapper panel to center the loginPanel horizontally and add vertical spacing
         JPanel wrapperPanel = new JPanel();
         wrapperPanel.setLayout(new BoxLayout(wrapperPanel, BoxLayout.Y_AXIS));
