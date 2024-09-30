@@ -16,11 +16,10 @@ public class HotelManagementUI extends JFrame {
         setSize(800, 600); // Initial window size
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setVisible(true);
         setLayout(null); // Use null layout for custom positioning
 
         // Load and set the initial background image
-        ImageIcon originalImage = new ImageIcon("Java-Project\\images\\homeback.png");
+        ImageIcon originalImage = new ImageIcon("images/homeback.png");
         background = new JLabel(new ImageIcon(originalImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH)));
         background.setBounds(0, 0, getWidth(), getHeight());
 
@@ -38,11 +37,11 @@ public class HotelManagementUI extends JFrame {
         JButton logoutButton = createCustomButton("", Color.decode("#FF3366"));
 
         // Adding icons to the buttons
-        manageRoomButton.setIcon(new ImageIcon("Java-Project\\images\\manage.png"));
-        checkInButton.setIcon(new ImageIcon("Java-Project\\images\\checkin.png"));
-        checkOutButton.setIcon(new ImageIcon("Java-Project\\\\images\\\\checkout.png"));
-        billButton.setIcon(new ImageIcon("Java-Project\\\\images\\\\bill.png"));
-        logoutButton.setIcon(new ImageIcon("Java-Project\\images\\logoutHome.png"));
+        manageRoomButton.setIcon(new ImageIcon("images/manage.png"));
+        checkInButton.setIcon(new ImageIcon("images/checkin.png"));
+        checkOutButton.setIcon(new ImageIcon("images/checkout.png"));
+        billButton.setIcon(new ImageIcon("images/bill.png"));
+        logoutButton.setIcon(new ImageIcon("images/logoutHome.png"));
         makeButtonTransparent(logoutButton); // Transparent logout button
 
         // Add buttons to the panel
