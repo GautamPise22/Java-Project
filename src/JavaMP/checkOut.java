@@ -19,7 +19,7 @@ public class checkOut extends JFrame implements ActionListener {
         setLayout(null); // Using null layout, which requires manual placement of components
 
         // Load and set background image
-        ImageIcon originalImage = new ImageIcon("Java-Project\\images\\checkOutHome.png");
+        ImageIcon originalImage = new ImageIcon("images\\checkOutHome.png");
         bg = new JLabel(new ImageIcon(originalImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH)));
         bg.setBounds(0, 0, getWidth(), getHeight());
 
@@ -40,12 +40,14 @@ public class checkOut extends JFrame implements ActionListener {
             }
         });
 
+        
         Arrays.fill(roomnumber, 0);
 
         // Initialize components
-        tf = new JTextField(10);
-        b = new JButton("Submit");
+        tf = createStyledTextField(20);
+        b = createCustomButton(" Submit ", Color.decode("#FFCC33"));
         l = new JLabel("Enter Room Number to Leave: ");
+        l.setFont(new Font("Arial", Font.PLAIN, 18));
         l.setForeground(Color.WHITE);
         b.setBackground(Color.GREEN);
 
@@ -108,10 +110,39 @@ public class checkOut extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            checkOut ui = new checkOut();
-            ui.setVisible(true);
+    private JButton createCustomButton(String text, Color bgColor) {
+        JButton button = new JButton(text);
+        button.setFocusPainted(false); // Remove focus border
+        button.setContentAreaFilled(true); // Fill the button area with color
+        button.setOpaque(true); // Make sure the button is opaque
+        button.setFont(new Font("Arial", Font.BOLD, 14)); // Set custom font
+        button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2)); // Create a border
+
+        // Hover effect
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(bgColor.darker()); // Darken color on hover
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(bgColor); // Reset to original color
+            }
         });
+
+        return button;
     }
+
+    private JTextField createStyledTextField(int columns) {
+        JTextField textField = new JTextField(columns);
+        textField.setFont(new Font("Arial", Font.PLAIN, 16));
+        textField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+        textField.setBackground(Color.LIGHT_GRAY);
+        textField.setForeground(Color.BLACK);
+
+        return textField;
+    }
+
+    
 }

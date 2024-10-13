@@ -1,13 +1,14 @@
 package JavaMP;
-
+import JavaMP.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class HotelManagementUI extends JFrame {
+public class HotelManagementUI extends JFrame implements ActionListener{
 
     private JLabel background;
     private JPanel buttonPanel;
+    JButton checkInButton, checkOutButton, billButton, logoutButton;
 
     public HotelManagementUI() {   
            
@@ -30,14 +31,14 @@ public class HotelManagementUI extends JFrame {
         buttonPanel.setBounds(getWidth() - 200, 50, 180, 400); // Adjust based on window size
 
         // Adding buttons
-        JButton manageRoomButton = createCustomButton("Manage Room", Color.decode("#FFCC00"));
-        JButton checkInButton = createCustomButton("Customer Check In", Color.decode("#FF6600"));
-        JButton checkOutButton = createCustomButton("Customer Check Out", Color.decode("#FFCC33"));
-        JButton billButton = createCustomButton("Customer Details Bill", Color.decode("#FFCC99"));
-        JButton logoutButton = createCustomButton("", Color.decode("#FF3366"));
+        
+        checkInButton = createCustomButton("Customer Check In", Color.decode("#FF6600"));
+        checkOutButton = createCustomButton("Customer Check Out", Color.decode("#FFCC33"));
+        billButton = createCustomButton("Customer Details Bill", Color.decode("#FFCC99"));
+        logoutButton = createCustomButton("", Color.decode("#FF3366"));
 
         // Adding icons to the buttons
-        manageRoomButton.setIcon(new ImageIcon("images/manage.png"));
+      
         checkInButton.setIcon(new ImageIcon("images/checkin.png"));
         checkOutButton.setIcon(new ImageIcon("images/checkout.png"));
         billButton.setIcon(new ImageIcon("images/bill.png"));
@@ -45,7 +46,6 @@ public class HotelManagementUI extends JFrame {
         makeButtonTransparent(logoutButton); // Transparent logout button
 
         // Add buttons to the panel
-        buttonPanel.add(manageRoomButton);
         buttonPanel.add(checkInButton);
         buttonPanel.add(checkOutButton);
         buttonPanel.add(billButton);
@@ -73,7 +73,30 @@ public class HotelManagementUI extends JFrame {
             }
         });
 
+        checkInButton.addActionListener(this);
+        checkOutButton.addActionListener(this);
+        billButton.addActionListener(this);
+        logoutButton.addActionListener(this);
         
+    }
+
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource()==checkInButton){
+            CheckIn ci=new CheckIn();
+            ci.setVisible(true);
+            dispose();
+        }
+        if(e.getSource()==checkOutButton){
+            checkOut co=new checkOut();
+            co.setVisible(true);
+            dispose();
+        }
+        if(e.getSource()==billButton){
+            
+        }
+        if(e.getSource()==logoutButton){
+           
+        }
     }
 
     // Transparent Button method

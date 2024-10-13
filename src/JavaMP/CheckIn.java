@@ -238,10 +238,5 @@ public class CheckIn extends JFrame {
         return textField;
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            CheckIn ui = new CheckIn();
-            ui.setVisible(true);
-        });
-    }
+    
 }
