@@ -13,10 +13,11 @@ public class HotelProgressBar extends JFrame {
 
     public HotelProgressBar() {
         // Set up the JFrame
-        setTitle("Kushwaha Hotel Launching Application");
+        setTitle("Saffron Sands Hotel Launching Application");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout()); // Apply BorderLayout
+        
 
        // Load and set the initial background image
        ImageIcon originalImage = new ImageIcon("images/checkInBackground.png");
@@ -98,6 +99,9 @@ public class HotelProgressBar extends JFrame {
                     progressBar.setString("Launching Application... " + progressValue + "%");
                 } else {
                     timer.cancel(); // Stop the timer when progress reaches 100
+                    LoginPage lp=new LoginPage();
+                    lp.setVisible(true);
+                    dispose();
                 }
             }
         };

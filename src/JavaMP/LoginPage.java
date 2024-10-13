@@ -15,7 +15,7 @@ public class LoginPage extends JFrame {
     public LoginPage() {
 
         // Set up the frame
-        setSize(400, 300);
+        setSize(700, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -105,15 +105,23 @@ public class LoginPage extends JFrame {
     private class LoginButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            String user="admin";
+            String pass="mes@123";
             // Get username and password input
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
-            System.out.println("Username: " + username + ", Password: " + password);
-            // Add your login validation logic here
+            
+            if(user.equals(username) && pass.equals(password)){
+                HotelManagementUI hu = new HotelManagementUI();
+                hu.setVisible(true);
+                dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(LoginPage.this, "Invalid Username or Password", 
+                    "Not Found", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
-    public static void main(String[] args) {
-        new LoginPage();
-    }
+    
 }

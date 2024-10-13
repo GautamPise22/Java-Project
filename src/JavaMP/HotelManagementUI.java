@@ -1,5 +1,4 @@
 package JavaMP;
-import JavaMP.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -95,7 +94,9 @@ public class HotelManagementUI extends JFrame implements ActionListener{
             
         }
         if(e.getSource()==logoutButton){
-           
+            LoginPage lp=new LoginPage();
+            lp.setVisible(true);
+            dispose();
         }
     }
 
@@ -131,10 +132,5 @@ public class HotelManagementUI extends JFrame implements ActionListener{
 
         return button;
     }
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            HotelManagementUI ui = new HotelManagementUI();
-            ui.setVisible(true);
-        });
-    }
+    
 }
