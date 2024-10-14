@@ -2,20 +2,23 @@ package JavaMP;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.sql.*;
+import java.util.Date;
 
-public class CheckIn extends JFrame {
+public class CheckIn extends JFrame implements ActionListener {
     private JPanel checkInPanel;
     private JLabel background;
+    private JTextField nameField, mobileField, nationalityField, aadharField, daysToStayField;
+    private JSpinner checkInDateSpinner;
+    private JComboBox<String> roomTypeCombo, bedCombo, genderCombo;
+    private JTextArea addressArea;
+    private JButton clearButton, allotButton, homeButton;
 
     public CheckIn() {
-
         // Setting up the frame
         setTitle("Hotel Management System");
-        setSize(1000, 800);
+        setSize(800, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -47,55 +50,57 @@ public class CheckIn extends JFrame {
         // Adding labels and text fields with customized look
         JLabel nameLabel = new JLabel("Name");
         nameLabel.setFont(labelFont);
-        JTextField nameField = createStyledTextField(20);
+        nameField = createStyledTextField(20);
 
         JLabel checkInLabel = new JLabel("Check In Date");
         checkInLabel.setFont(labelFont);
-        JSpinner checkInDateSpinner = new JSpinner(new SpinnerDateModel());
+        checkInDateSpinner = new JSpinner(new SpinnerDateModel());
         JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(checkInDateSpinner, "yyyy-MM-dd");
         checkInDateSpinner.setEditor(dateEditor);
         checkInDateSpinner.setFont(fieldFont);
 
         JLabel mobileLabel = new JLabel("Mobile Number");
         mobileLabel.setFont(labelFont);
-        JTextField mobileField = createStyledTextField(20);
+        mobileField = createStyledTextField(20);
 
         JLabel roomTypeLabel = new JLabel("Room Type");
         roomTypeLabel.setFont(labelFont);
-        JComboBox<String> roomTypeCombo = new JComboBox<>(new String[]{"AC", "Non-AC"});
+        roomTypeCombo = new JComboBox<>(new String[]{"AC", "Non-AC"});
         roomTypeCombo.setFont(fieldFont);
 
         JLabel bedSelectionLabel = new JLabel("Number of Beds");
         bedSelectionLabel.setFont(labelFont);
-        JComboBox<String> bedCombo = new JComboBox<>(new String[]{"1", "2", "3"});
+        bedCombo = new JComboBox<>(new String[]{"1", "2", "3"});
         bedCombo.setFont(fieldFont);
 
         JLabel genderSelectionLabel = new JLabel("Gender");
         genderSelectionLabel.setFont(labelFont);
-        JComboBox<String> genderCombo = new JComboBox<>(new String[]{"Male", "Female", "Other"});
+        genderCombo = new JComboBox<>(new String[]{"Male", "Female", "Other"});
         genderCombo.setFont(fieldFont);
 
         JLabel nationalityLabel = new JLabel("Nationality");
         nationalityLabel.setFont(labelFont);
-        JTextField nationalityField = createStyledTextField(20);
+        nationalityField = createStyledTextField(20);
 
         JLabel aadharDetailsLabel = new JLabel("Aadhar");
         aadharDetailsLabel.setFont(labelFont);
-        JTextField aadharField = createStyledTextField(20);
+        aadharField = createStyledTextField(20);
 
         JLabel daysToStayLabel = new JLabel("Number of days to stay");
         daysToStayLabel.setFont(labelFont);
-        JTextField daysToStayField = createStyledTextField(20);
+        daysToStayField = createStyledTextField(20);
 
         JLabel addressLabel = new JLabel("Address");
         addressLabel.setFont(labelFont);
-        JTextArea addressArea = new JTextArea(5, 20);
+        addressArea = new JTextArea(5, 20);
         addressArea.setFont(fieldFont);
         addressArea.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
         // Customizing Buttons with increased size
-        JButton allotButton = createStyledButton("Allocate Room", Color.BLUE);
-        JButton clearButton = createStyledButton("Clear", Color.RED);
+        allotButton = createStyledButton("Allocate Room", Color.BLUE);
+        clearButton = createStyledButton("Clear", Color.RED);
+        homeButton = createStyledButtonWithIcon("Home", "images\\homeicon.jpg"); // Add the home button with an icon
+
 
         // Adding components to GridBagLayout with positioning
         gbc.gridy = 0;
@@ -172,9 +177,15 @@ public class CheckIn extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 10;
         checkInPanel.add(allotButton, gbc);
+        allotButton.addActionListener(this);
 
         gbc.gridx = 1;
         checkInPanel.add(clearButton, gbc);
+        clearButton.addActionListener(this);
+
+        homeButton.setBounds(10, 10, 10, 10); // Set the position and size (x, y, width, height)
+        checkInPanel.add(homeButton); // Add to the panel
+        homeButton.addActionListener(this);
 
         // Set bounds and layer for the checkInPanel and add to layeredPane
         checkInPanel.setBounds(0, 0, getWidth(), getHeight());
@@ -202,41 +213,134 @@ public class CheckIn extends JFrame {
         });
     }
 
-    // Method to create a styled button
-    private JButton createStyledButton(String text, Color color) {
-        JButton button = new JButton(text);
-        button.setFont(new Font("Arial", Font.BOLD, 18));
-        button.setPreferredSize(new Dimension(180, 50)); // Increased size for visual balance
-        button.setBackground(color);
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
+    public void actionPerformed(ActionEvent ae) {
+        if(ae.getSource() == homeButton){
+            HotelManagementUI hi =new HotelManagementUI();
+            hi.setVisible(true);
+            dispose();
+        }
+        if (ae.getSource() == clearButton) {
+            // Clear all fields
+            nameField.setText("");
+            mobileField.setText("");
+            nationalityField.setText("");
+            aadharField.setText("");
+            daysToStayField.setText("");
+            addressArea.setText("");
+            checkInDateSpinner.setValue(new Date());
+            roomTypeCombo.setSelectedIndex(0);
+            bedCombo.setSelectedIndex(0);
+            genderCombo.setSelectedIndex(0);
+        }
 
-        // Add hover effect
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                button.setBackground(color.darker());
+        if (ae.getSource() == allotButton) {
+            String name = nameField.getText();
+            String mobile = mobileField.getText();
+            String nationality = nationalityField.getText();
+            String aadhar = aadharField.getText();
+            String daysToStay = daysToStayField.getText();
+            String address = addressArea.getText();
+            Date checkInDate = (Date) checkInDateSpinner.getValue();
+            String roomType = (String) roomTypeCombo.getSelectedItem();
+            String numberOfBeds = (String) bedCombo.getSelectedItem();
+            String gender = (String) genderCombo.getSelectedItem();
+
+            // Basic validation
+            if (name.isEmpty() || mobile.isEmpty() || nationality.isEmpty() || aadhar.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please fill in all required fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                button.setBackground(color);
-            }
-        });
+            // Database connection
+            String url = "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12737707";
+            String user = "sql12737707";
+            String password = "1FaNC3IdnW";
 
-        return button;
+            try (Connection con = DriverManager.getConnection(url, user, password)) {
+                int roomNo = getAvailableRoomNumber(con, roomType); // Fetch an available room number
+                String sql = "INSERT INTO Customer VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                try (PreparedStatement pst = con.prepareStatement(sql)) {
+                    pst.setString(1, name);
+                    pst.setString(2, mobile);
+                    pst.setString(3, gender);
+                    pst.setString(4, nationality);
+                    pst.setString(5, aadhar);
+                    pst.setDate(6, new java.sql.Date(checkInDate.getTime())); // Set the date
+                    pst.setDate(7, null);
+                    pst.setInt(8, Integer.parseInt(numberOfBeds));
+                    pst.setString(9, roomType);
+                    pst.setString(10, address);
+                    pst.setInt(11, Integer.parseInt(daysToStay));
+                    pst.setInt(12, roomNo);
+                    pst.setBoolean(13, true);
+
+                    pst.executeUpdate();
+
+                    // Update the hotel table to mark the room as occupied and set the occupant's name
+                    String updateSql = "UPDATE Hotel SET Occupied = true, OccupiedBy = ? WHERE RoomNo = ?";
+                    try (PreparedStatement updatePst = con.prepareStatement(updateSql)) {
+                        updatePst.setString(1, name); // Set the name of the person occupying the room
+                        updatePst.setInt(2, roomNo); // Set the room number being updated
+                        updatePst.executeUpdate();
+                    }
+
+
+                    JOptionPane.showMessageDialog(this, "Room allocated successfully! Your Room Number is "+roomNo, "Success", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error while allocating room: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
-    // Method to create a styled text field
+    // Method to create styled text fields
     private JTextField createStyledTextField(int columns) {
         JTextField textField = new JTextField(columns);
         textField.setFont(new Font("Arial", Font.PLAIN, 16));
-        textField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
-        textField.setBackground(Color.LIGHT_GRAY);
-        textField.setForeground(Color.BLACK);
-
+        textField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         return textField;
     }
 
+    // Method to create styled buttons
+    private JButton createStyledButton(String text, Color color) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Arial", Font.BOLD, 16));
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
+        button.setPreferredSize(new Dimension(150, 50));
+        return button;
+    }
+
+    private JButton createStyledButtonWithIcon(String text, String iconPath) {
+        ImageIcon icon = new ImageIcon(iconPath);
+        JButton button = new JButton(icon);
+        button.setPreferredSize(new Dimension(50, 50)); // Set the size of the button
+        button.setContentAreaFilled(false); // Transparent background
+        button.setBorderPainted(false); // Remove border
+        return button;
+    }
+
+    // Method to get an available room number based on room type
+    private int getAvailableRoomNumber(Connection con, String roomType) throws SQLException {
+        // Determine the room number range based on room type
+        String query;
+        if (roomType.equals("AC")) {
+            query = "SELECT RoomNo FROM Hotel WHERE Occupied = false AND RoomNo BETWEEN 1 AND 25 LIMIT 1";
+        } else { // Assuming Non-AC
+            query = "SELECT RoomNo FROM Hotel WHERE Occupied = false AND RoomNo BETWEEN 26 AND 50 LIMIT 1";
+        }
+
+        try (Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                return rs.getInt("RoomNo");
+            } else {
+                throw new SQLException("No available rooms.");
+            }
+        }
+    }
+
+    
     
 }

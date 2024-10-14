@@ -8,6 +8,7 @@ public class HotelManagementUI extends JFrame implements ActionListener{
     private JLabel background;
     private JPanel buttonPanel;
     JButton checkInButton, checkOutButton, billButton, logoutButton;
+    
 
     public HotelManagementUI() {   
            
