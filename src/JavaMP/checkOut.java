@@ -26,7 +26,6 @@ public class checkOut extends JFrame implements ActionListener {
         setTitle("Saffron Sands Hotel Check Out");
         setSize(700, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
         setLocationRelativeTo(null);
         setLayout(null); // Using null layout
 
@@ -206,8 +205,5 @@ public class checkOut extends JFrame implements ActionListener {
         return textField;
     }
 
-    public static void main(String[] args) {
-        new checkOut();
-    }
-
+    
 }
