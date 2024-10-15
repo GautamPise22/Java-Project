@@ -15,16 +15,15 @@ public class checkOut extends JFrame implements ActionListener {
     public checkOut() {
         // Initialize database connection
         try {
-            con = DriverManager.getConnection("jdbc:mysql://sql12.freesqldatabase.com:3306/sql12737707", "sql12737707",
-                    "1FaNC3IdnW");
+            con = DriverManager.getConnection("jdbc:mysql://sql12.freesqldatabase.com:3306/sql12737707", "sql12737707","1FaNC3IdnW");
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Database connection failed.", "Error", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
 
-        setTitle("Check Out");
-        setSize(400, 400);
+        setTitle("Saffron Sands Hotel Check Out");
+        setSize(700, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(null); // Using null layout

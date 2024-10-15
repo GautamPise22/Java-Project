@@ -13,8 +13,8 @@ public class HotelManagementUI extends JFrame implements ActionListener{
     public HotelManagementUI() {   
            
         // Setting up the frame
-        setTitle("Hotel Management System");
-        setSize(800, 600); // Initial window size
+        setTitle("Saffron Sands Hotel Management System");
+        setSize(700, 700); // Initial window size
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(null); // Use null layout for custom positioning

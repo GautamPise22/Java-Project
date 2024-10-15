@@ -14,7 +14,7 @@ public class HotelProgressBar extends JFrame {
     public HotelProgressBar() {
         // Set up the JFrame
         setTitle("Saffron Sands Hotel Launching Application");
-        setSize(600, 400);
+        setSize(700, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout()); // Apply BorderLayout
         

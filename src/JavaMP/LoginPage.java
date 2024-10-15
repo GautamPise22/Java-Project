@@ -16,6 +16,7 @@ public class LoginPage extends JFrame {
 
         // Set up the frame
         setSize(700, 700);
+        setTitle("Hotel Admin Login Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 

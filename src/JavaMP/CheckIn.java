@@ -17,8 +17,8 @@ public class CheckIn extends JFrame implements ActionListener {
 
     public CheckIn() {
         // Setting up the frame
-        setTitle("Hotel Management System");
-        setSize(800, 800);
+        setTitle("Saffron Sands Hotel Check In");
+        setSize(700, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
