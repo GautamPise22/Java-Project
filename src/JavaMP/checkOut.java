@@ -14,6 +14,7 @@ public class checkOut extends JFrame implements ActionListener {
 
     public checkOut() {
         // Initialize database connection
+        
         try {
             con = DriverManager.getConnection("jdbc:mysql://sql12.freesqldatabase.com:3306/sql12737707", "sql12737707","1FaNC3IdnW");
         } catch (SQLException e) {
@@ -25,11 +26,12 @@ public class checkOut extends JFrame implements ActionListener {
         setTitle("Saffron Sands Hotel Check Out");
         setSize(700, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
         setLocationRelativeTo(null);
         setLayout(null); // Using null layout
 
         // Load and set background image
-        ImageIcon originalImage = new ImageIcon("images\\checkOutHome.png");
+        ImageIcon originalImage = new ImageIcon("images\\checkouthotel.png");
         bg = new JLabel(
                 new ImageIcon(originalImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH)));
         bg.setBounds(0, 0, getWidth(), getHeight());
@@ -54,7 +56,6 @@ public class checkOut extends JFrame implements ActionListener {
         b = createCustomButton(" Submit ", Color.decode("#FFCC33"));
         l = new JLabel("Enter Room Number to Leave: ");
         l.setFont(new Font("Arial", Font.PLAIN, 18));
-        l.setForeground(Color.WHITE);
         b.setBackground(Color.GREEN);
         homeButton = createStyledButtonWithIcon("Home", "images\\homeicon.jpg");
 
@@ -205,6 +206,8 @@ public class checkOut extends JFrame implements ActionListener {
         return textField;
     }
 
-    
+    public static void main(String[] args) {
+        new checkOut();
+    }
 
 }
