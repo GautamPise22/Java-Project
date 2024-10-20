@@ -126,16 +126,26 @@ public class checkOut extends JFrame implements ActionListener {
                                 }
 
                                 // Update the customer record
-                                String updateCustomerSql = "UPDATE Customer SET OccupiedOrNot = false, c_checkOutDate = ?, c_roomNoAllocated = 0 WHERE c_name = ?";
+                                String updateCustomerSql = "UPDATE Customer SET OccupiedOrNot = false, c_checkOutDate = ?, c_roomNoAllocated = 0, c_roomNoWhichWasAllocated=? WHERE c_name = ?";
                                 try (PreparedStatement updateCustomerPst = con.prepareStatement(updateCustomerSql)) {
                                     updateCustomerPst.setDate(1, new java.sql.Date(new Date().getTime())); // Current
-                                                                                                           // date
-                                    updateCustomerPst.setString(2, occupiedBy);
+                                    updateCustomerPst.setInt(2, room);                                                                    // date
+                                    updateCustomerPst.setString(3, occupiedBy);
                                     updateCustomerPst.executeUpdate();
                                 }
 
-                                JOptionPane.showMessageDialog(this, "Room " + room + " has been vacated. Thank you!",
-                                        "Success", JOptionPane.INFORMATION_MESSAGE);
+                                // Retrieve the bill number
+                            String getBillNoSql = "SELECT c_billNo FROM Customer WHERE c_name = ?";
+                            try (PreparedStatement getBillNoPst = con.prepareStatement(getBillNoSql)) {
+                                getBillNoPst.setString(1, occupiedBy);
+                                ResultSet billNoRs = getBillNoPst.executeQuery();
+                                
+                                if (billNoRs.next()) {
+                                    int billNo = billNoRs.getInt("c_billNo");
+                                    JOptionPane.showMessageDialog(this, "Room " + room + " has been vacated. Thank you! Your bill number is " + billNo,
+                                            "Success", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
                             }
                         } else {
                             JOptionPane.showMessageDialog(this, "Room " + room + " does not exist. Please try again!",

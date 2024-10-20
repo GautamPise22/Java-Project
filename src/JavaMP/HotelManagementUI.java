@@ -7,7 +7,7 @@ public class HotelManagementUI extends JFrame implements ActionListener{
 
     private JLabel background;
     private JPanel buttonPanel;
-    JButton checkInButton, checkOutButton, databaseButton, logoutButton;
+    JButton checkInButton, checkOutButton, databaseButton, billButton, logoutButton;
     
 
     public HotelManagementUI() {   
@@ -35,6 +35,7 @@ public class HotelManagementUI extends JFrame implements ActionListener{
         checkInButton = createCustomButton("Check In", Color.decode("#FF6600"));
         checkOutButton = createCustomButton("Check Out", Color.decode("#FFCC33"));
         databaseButton = createCustomButton("DataBase", Color.decode("#FFCC99"));
+        billButton = createCustomButton("Bill", Color.decode("#23F3DB"));
         logoutButton = createCustomButton("", Color.decode("#FF3366"));
 
         // Adding icons to the buttons
@@ -42,6 +43,7 @@ public class HotelManagementUI extends JFrame implements ActionListener{
         checkInButton.setIcon(new ImageIcon("images/checkin.png"));
         checkOutButton.setIcon(new ImageIcon("images/checkout.png"));
         databaseButton.setIcon(new ImageIcon("images/database.png"));
+        billButton.setIcon(new ImageIcon("images/billicon.jpg"));
         logoutButton.setIcon(new ImageIcon("images/logoutHome.png"));
         makeButtonTransparent(logoutButton); // Transparent logout button
 
@@ -49,6 +51,7 @@ public class HotelManagementUI extends JFrame implements ActionListener{
         buttonPanel.add(checkInButton);
         buttonPanel.add(checkOutButton);
         buttonPanel.add(databaseButton);
+        buttonPanel.add(billButton);
         buttonPanel.add(logoutButton);
 
         // Add components to the frame
@@ -76,6 +79,7 @@ public class HotelManagementUI extends JFrame implements ActionListener{
         checkInButton.addActionListener(this);
         checkOutButton.addActionListener(this);
         databaseButton.addActionListener(this);
+        billButton.addActionListener(this);
         logoutButton.addActionListener(this);
         
     }
@@ -94,6 +98,11 @@ public class HotelManagementUI extends JFrame implements ActionListener{
         if(e.getSource()== databaseButton){
             DatabaseTables dt=new DatabaseTables();
             dt.setVisible(true);
+            dispose();
+        }
+        if(e.getSource()== billButton){
+            BillDetails bd=new BillDetails();
+            bd.setVisible(true);
             dispose();
         }
         if(e.getSource()==logoutButton){

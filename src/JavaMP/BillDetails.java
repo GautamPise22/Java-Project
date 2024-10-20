@@ -1,27 +1,35 @@
 package JavaMP;
 
 import javax.swing.*;
+
 import java.awt.*;
+import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
-public class BillDetails extends JFrame {
+public class BillDetails extends JFrame implements ActionListener{
 
     // Declare all labels as instance variables
-    private JLabel billIdDetails, nameDetails, mobileDetails, roomNoDetails, roomTypeDetails, totalBedsDetails, priceDetail, checkInDetails, checkOutDetails, noOfDaysDetails, totalAmountDetails;
+    private JLabel billIdDetails, nameDetails, mobileDetails, roomNoDetails, roomTypeDetails, totalBedsDetails,
+            checkInDetails, checkOutDetails, noOfDaysDetails, totalAmountDetails;
     private int roomNo;
     private double noOfDaysToCalculate, noOfBedsToCalculate;
     private double roomChargePerDay;
     private final double bedsChargePerDay = 200.0;
     private String roomTypeToCalculate;
+    JButton homeButton;
+    private int billNo;
     public BillDetails() {
         // Set the title of the JFrame
         super("Hotel Bill");
 
-        // JOptionPane
-        roomNo = Integer.parseInt(JOptionPane.showInputDialog("What is your Room Number?"));
+        String billInput = JOptionPane.showInputDialog("What is your Bill Number?");
+        if (billInput == null || billInput.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No room number entered.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
         // Create a JPanel with a GridBagLayout for structured placement
         JPanel panel = new JPanel(new GridBagLayout());
@@ -34,28 +42,41 @@ public class BillDetails extends JFrame {
         String user = "sql12737707";
         String password = "1FaNC3IdnW";
 
+        
+        Connection con = null;
+
         try {
+            con = DriverManager.getConnection(url, user,password);
+            billNo = Integer.parseInt(billInput);
             // Select Query for Details of Users
-            String selectForCustomerDetails = "Select c_name, c_mobileNo, c_roomType, c_noOfBeds, c_checkInDate, c_checkOutDate, c_noOfDays from Customer where c_roomNoAllocated = "+roomNo+";";
-            Connection con = DriverManager.getConnection(url, user, password);
+            String selectForCustomerDetails = "SELECT c_name, c_mobileNo, c_roomNoWhichWasAllocated, c_roomType, c_noOfBeds, c_checkInDate, c_checkOutDate, c_noOfDays FROM Customer WHERE c_billNo = "
+                    + billNo;
+            con = DriverManager.getConnection(url, user, password);
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(selectForCustomerDetails);
-
-            while (rs.next()) {
+            
+            if (rs.next()) {
                 nameDetails = new JLabel(rs.getString("c_name"));
                 mobileDetails = new JLabel(rs.getString("c_mobileNo"));
-                roomNoDetails = new JLabel(roomNo +"");
+                roomNoDetails = new JLabel(String.valueOf(rs.getInt("c_roomNoWhichWasAllocated")));
                 roomTypeDetails = new JLabel(rs.getString("c_roomType"));
                 totalBedsDetails = new JLabel(rs.getString("c_noOfBeds"));
-                checkInDetails = new JLabel(rs.getDate("c_checkInDate")+"");
-                checkOutDetails = new JLabel(rs.getDate("c_checkOutDate")+"");
-                noOfDaysDetails = new JLabel(rs.getInt("c_noOfDays")+"");
+                checkInDetails = new JLabel(rs.getDate("c_checkInDate").toString());
+                checkOutDetails = new JLabel(rs.getDate("c_checkOutDate").toString());
+                noOfDaysDetails = new JLabel(String.valueOf(rs.getInt("c_noOfDays")));
                 noOfDaysToCalculate = rs.getInt("c_noOfDays");
                 noOfBedsToCalculate = Double.parseDouble(rs.getString("c_noOfBeds"));
                 roomTypeToCalculate = rs.getString("c_roomType");
+            } else {
+                throw new SQLException("No customer found for Bill number: " + billNo);
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error retrieving customer details: " + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(this, "Invalid Bill Number",
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         // Increase font size for all components
@@ -83,7 +104,7 @@ public class BillDetails extends JFrame {
         panel.add(billIdLabel, gbc);
 
         // Bill ID Details Label
-        billIdDetails = new JLabel("1");  // Placeholder value
+        billIdDetails = new JLabel(""+billNo); // Placeholder value
         billIdDetails.setFont(largeFont);
         gbc.gridx++;
         panel.add(billIdDetails, gbc);
@@ -214,7 +235,8 @@ public class BillDetails extends JFrame {
         panel.add(totalAmountLabel, gbc);
 
         // Total Amount Details Label
-        totalAmountDetails = new JLabel(calculateAmountDetails(noOfDaysToCalculate, noOfBedsToCalculate, roomTypeToCalculate));
+        totalAmountDetails = new JLabel(
+                calculateAmountDetails(noOfDaysToCalculate, noOfBedsToCalculate, roomTypeToCalculate));
         totalAmountDetails.setFont(largeFont);
         gbc.gridx++;
         panel.add(totalAmountDetails, gbc);
@@ -234,15 +256,15 @@ public class BillDetails extends JFrame {
         panel.add(footerLabel, gbc);
 
         // Print Button
-        JButton printButton = new JButton("Submit");
-        printButton.setFont(new Font("Arial", Font.BOLD, 20)); // Bigger font for the button
+        homeButton = createStyledButtonWithIcon("Home", "images\\homeicon.jpg");
+        homeButton.setFont(new Font("Arial", Font.BOLD, 20)); // Bigger font for the button
         gbc.gridy++;
         gbc.anchor = GridBagConstraints.CENTER;
-        panel.add(printButton, gbc);
+        panel.add(homeButton, gbc);
 
         // Add panel to the frame
         add(panel);
-
+        homeButton.addActionListener(this);
         // Set frame properties for larger size
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(700, 800);
@@ -256,20 +278,36 @@ public class BillDetails extends JFrame {
             roomChargePerDay = 1200.0;
             double roomCharge = roomChargePerDay * numberOfDays;
             double bedsCharge = bedsChargePerDay * noOfBeds;
-            double beforeGST =  roomCharge + bedsCharge;
+            double beforeGST = roomCharge + bedsCharge;
             double GST = 0.18;
             totalBill = beforeGST + (beforeGST * GST);
         } else {
             roomChargePerDay = 600.0;
             double roomCharge = roomChargePerDay * numberOfDays;
             double bedsCharge = bedsChargePerDay * noOfBeds;
-            double beforeGST =  roomCharge + bedsCharge;
+            double beforeGST = roomCharge + bedsCharge;
             double GST = 0.18;
             totalBill = beforeGST + (beforeGST * GST);
         }
-        return new String(totalBill+"");
+        return new String(totalBill + "");
     }
-    public static void main(String[] args) {
-        new BillDetails();
+
+    public void actionPerformed(ActionEvent ae){
+        if (ae.getSource() == homeButton) {
+            HotelManagementUI hi = new HotelManagementUI();
+            hi.setVisible(true);
+            dispose();
+        }
     }
+
+
+    private JButton createStyledButtonWithIcon(String text, String iconPath) {
+        ImageIcon icon = new ImageIcon(iconPath);
+        JButton button = new JButton(icon);
+        button.setPreferredSize(new Dimension(30, 30)); // Set the size of the button
+        button.setContentAreaFilled(false); // Transparent background
+        button.setBorderPainted(false); // Remove border
+        return button;
+    }
+    
 }

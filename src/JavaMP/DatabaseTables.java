@@ -45,14 +45,24 @@ public class DatabaseTables extends JFrame implements ActionListener{
         JTabbedPane tabbedPane = new JTabbedPane();
 
         // Add Customer Table
-        DefaultTableModel customerModel = new DefaultTableModel();
+        DefaultTableModel customerModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Make the table non-editable
+            }
+        };
         customerTable = new JTable(customerModel);
         customerScrollPane = new JScrollPane(customerTable);
         fetchTableData("Customer", customerModel);
         tabbedPane.addTab("Customer", customerScrollPane);
 
         // Add Hotel Table
-        DefaultTableModel hotelModel = new DefaultTableModel();
+        DefaultTableModel hotelModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Make the table non-editable
+            }
+        };
         hotelTable = new JTable(hotelModel);
         hotelScrollPane = new JScrollPane(hotelTable);
         fetchTableData("Hotel", hotelModel);

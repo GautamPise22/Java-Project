@@ -6,6 +6,18 @@ import java.awt.event.*;
 import java.sql.*;
 import java.util.Date;
 
+class PhoneException extends Exception {
+    PhoneException(String s) {
+        super(s);
+    }
+}
+
+class AadharException extends Exception {
+    AadharException(String s) {
+        super(s);
+    }
+}
+
 public class CheckIn extends JFrame implements ActionListener {
     private JPanel checkInPanel;
     private JLabel background;
@@ -24,7 +36,8 @@ public class CheckIn extends JFrame implements ActionListener {
 
         // Load and set the initial background image
         ImageIcon originalImage = new ImageIcon("images/checkInBackground.png");
-        background = new JLabel(new ImageIcon(originalImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH)));
+        background = new JLabel(
+                new ImageIcon(originalImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH)));
         background.setBounds(0, 0, getWidth(), getHeight());
 
         // Create a JLayeredPane to layer the background and panel
@@ -65,17 +78,17 @@ public class CheckIn extends JFrame implements ActionListener {
 
         JLabel roomTypeLabel = new JLabel("Room Type");
         roomTypeLabel.setFont(labelFont);
-        roomTypeCombo = new JComboBox<>(new String[]{"AC", "Non-AC"});
+        roomTypeCombo = new JComboBox<>(new String[] { "AC", "Non-AC" });
         roomTypeCombo.setFont(fieldFont);
 
         JLabel bedSelectionLabel = new JLabel("Number of Beds");
         bedSelectionLabel.setFont(labelFont);
-        bedCombo = new JComboBox<>(new String[]{"1", "2", "3"});
+        bedCombo = new JComboBox<>(new String[] { "1", "2", "3" });
         bedCombo.setFont(fieldFont);
 
         JLabel genderSelectionLabel = new JLabel("Gender");
         genderSelectionLabel.setFont(labelFont);
-        genderCombo = new JComboBox<>(new String[]{"Male", "Female", "Other"});
+        genderCombo = new JComboBox<>(new String[] { "Male", "Female", "Other" });
         genderCombo.setFont(fieldFont);
 
         JLabel nationalityLabel = new JLabel("Nationality");
@@ -100,7 +113,6 @@ public class CheckIn extends JFrame implements ActionListener {
         allotButton = createStyledButton("Allocate Room", Color.BLUE);
         clearButton = createStyledButton("Clear", Color.RED);
         homeButton = createStyledButtonWithIcon("Home", "images\\homeicon.jpg"); // Add the home button with an icon
-
 
         // Adding components to GridBagLayout with positioning
         gbc.gridy = 0;
@@ -203,7 +215,8 @@ public class CheckIn extends JFrame implements ActionListener {
                 int newHeight = getHeight();
 
                 // Resize the background image
-                ImageIcon resizedImage = new ImageIcon(originalImage.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH));
+                ImageIcon resizedImage = new ImageIcon(
+                        originalImage.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH));
                 background.setIcon(resizedImage);
                 background.setBounds(0, 0, newWidth, newHeight);
 
@@ -214,8 +227,8 @@ public class CheckIn extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent ae) {
-        if(ae.getSource() == homeButton){
-            HotelManagementUI hi =new HotelManagementUI();
+        if (ae.getSource() == homeButton) {
+            HotelManagementUI hi = new HotelManagementUI();
             hi.setVisible(true);
             dispose();
         }
@@ -247,47 +260,67 @@ public class CheckIn extends JFrame implements ActionListener {
 
             // Basic validation
             if (name.isEmpty() || mobile.isEmpty() || nationality.isEmpty() || aadhar.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please fill in all required fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please fill in all required fields.", "Input Error",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            // Database connection
-            String url = "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12737707";
-            String user = "sql12737707";
-            String password = "1FaNC3IdnW";
-
-            try (Connection con = DriverManager.getConnection(url, user, password)) {
-                int roomNo = getAvailableRoomNumber(con, roomType); // Fetch an available room number
-                String sql = "INSERT INTO Customer VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                try (PreparedStatement pst = con.prepareStatement(sql)) {
-                    pst.setString(1, name);
-                    pst.setString(2, mobile);
-                    pst.setString(3, gender);
-                    pst.setString(4, nationality);
-                    pst.setString(5, aadhar);
-                    pst.setDate(6, new java.sql.Date(checkInDate.getTime())); // Set the date
-                    pst.setDate(7, null);
-                    pst.setInt(8, Integer.parseInt(numberOfBeds));
-                    pst.setString(9, roomType);
-                    pst.setString(10, address);
-                    pst.setInt(11, Integer.parseInt(daysToStay));
-                    pst.setInt(12, roomNo);
-                    pst.setBoolean(13, true);
-
-                    pst.executeUpdate();
-
-                    // Update the hotel table to mark the room as occupied and set the occupant's name
-                    String updateSql = "UPDATE Hotel SET Occupied = true, OccupiedBy = ? WHERE RoomNo = ?";
-                    try (PreparedStatement updatePst = con.prepareStatement(updateSql)) {
-                        updatePst.setString(1, name); // Set the name of the person occupying the room
-                        updatePst.setInt(2, roomNo); // Set the room number being updated
-                        updatePst.executeUpdate();
-                    }
-                    JOptionPane.showMessageDialog(this, "Room allocated successfully! Your Room Number is "+roomNo, "Success", JOptionPane.INFORMATION_MESSAGE);
+            if (!length(mobile, 10) || !length(aadhar, 12)) {
+                try {
+                    if (!length(mobile, 10))
+                        throw new PhoneException("Enter valid Phone Number.");
+                    if (!length(aadhar, 12))
+                        throw new AadharException("Enter valid Aadhar Card Number.");
+                } catch (AadharException e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (PhoneException e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Error while allocating room: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                // Database connection
+                String url = "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12737707";
+                String user = "sql12737707";
+                String password = "1FaNC3IdnW";
+
+                try (Connection con = DriverManager.getConnection(url, user, password)) {
+                    int roomNo = getAvailableRoomNumber(con, roomType); // Fetch an available room number
+                    String sql = "INSERT INTO Customer (c_name, c_mobileNo, c_gender, c_nationality, c_aadhar, c_checkInDate, c_checkOutDate, c_noOfDays, c_roomType, c_address, c_noOfBeds, c_roomNoAllocated, OccupiedOrNot, c_roomNoWhichWasAllocated) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+                    try (PreparedStatement pst = con.prepareStatement(sql)) {
+                        pst.setString(1, name); // c_name
+                        pst.setString(2, mobile); // c_mobileNo
+                        pst.setString(3, gender); // c_gender
+                        pst.setString(4, nationality); // c_nationality
+                        pst.setString(5, aadhar); // c_aadhar
+                        pst.setDate(6, new java.sql.Date(checkInDate.getTime())); // c_checkInDate
+                        pst.setDate(7, null); // c_checkOutDate
+                        pst.setInt(8, Integer.parseInt(daysToStay)); // c_noOfDays
+                        pst.setString(9, roomType); // c_roomType
+                        pst.setString(10, address); // c_address
+                        pst.setInt(11, Integer.parseInt(numberOfBeds)); // c_noOfBeds
+                        pst.setInt(12, roomNo); // c_roomNoAllocated
+                        pst.setBoolean(13, true); // OccupiedOrNot
+                        pst.setInt(14, 0); // c_roomNoWhichWasAllocated (if needed)
+
+                        // Execute the update
+                        pst.executeUpdate();
+
+                        // Update the hotel table to mark the room as occupied and set the occupant's
+                        // name
+                        String updateSql = "UPDATE Hotel SET Occupied = true, OccupiedBy = ? WHERE RoomNo = ?";
+                        try (PreparedStatement updatePst = con.prepareStatement(updateSql)) {
+                            updatePst.setString(1, name); // Set the name of the person occupying the room
+                            updatePst.setInt(2, roomNo); // Set the room number being updated
+                            updatePst.executeUpdate();
+                        }
+                        JOptionPane.showMessageDialog(this,
+                                "Room allocated successfully! Your Room Number is " + roomNo, "Success",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Error while allocating room: " + e.getMessage(),
+                            "Database Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
     }
@@ -330,12 +363,23 @@ public class CheckIn extends JFrame implements ActionListener {
         }
 
         try (Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query)) {
+                ResultSet rs = stmt.executeQuery(query)) {
             if (rs.next()) {
                 return rs.getInt("RoomNo");
             } else {
                 throw new SQLException("No available rooms.");
             }
         }
+    }
+
+    private boolean length(String str, int k) {
+        int c;
+        for (int j = 0; j < str.length(); j++) {
+            c = str.charAt(j);
+            if (c >= 48 && c <= 57 && str.length() == k) {
+                return true;
+            }
+        }
+        return false;
     }
 }
