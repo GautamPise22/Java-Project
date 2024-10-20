@@ -11,8 +11,11 @@ public class BillDetails extends JFrame {
 
     // Declare all labels as instance variables
     private JLabel billIdDetails, nameDetails, mobileDetails, roomNoDetails, roomTypeDetails, totalBedsDetails, priceDetail, checkInDetails, checkOutDetails, noOfDaysDetails, totalAmountDetails;
-    int roomNo;
-
+    private int roomNo;
+    private double noOfDaysToCalculate, noOfBedsToCalculate;
+    private double roomChargePerDay;
+    private final double bedsChargePerDay = 200.0;
+    private String roomTypeToCalculate;
     public BillDetails() {
         // Set the title of the JFrame
         super("Hotel Bill");
@@ -47,6 +50,9 @@ public class BillDetails extends JFrame {
                 checkInDetails = new JLabel(rs.getDate("c_checkInDate")+"");
                 checkOutDetails = new JLabel(rs.getDate("c_checkOutDate")+"");
                 noOfDaysDetails = new JLabel(rs.getInt("c_noOfDays")+"");
+                noOfDaysToCalculate = rs.getInt("c_noOfDays");
+                noOfBedsToCalculate = Double.parseDouble(rs.getString("c_noOfBeds"));
+                roomTypeToCalculate = rs.getString("c_roomType");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -208,7 +214,7 @@ public class BillDetails extends JFrame {
         panel.add(totalAmountLabel, gbc);
 
         // Total Amount Details Label
-        totalAmountDetails = new JLabel(calculateAmountDetails());  // Placeholder value
+        totalAmountDetails = new JLabel(calculateAmountDetails(noOfDaysToCalculate, noOfBedsToCalculate, roomTypeToCalculate));
         totalAmountDetails.setFont(largeFont);
         gbc.gridx++;
         panel.add(totalAmountDetails, gbc);
@@ -239,13 +245,29 @@ public class BillDetails extends JFrame {
 
         // Set frame properties for larger size
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(700, 800); // Increased the size for better visibility
-        setLocationRelativeTo(null); // Center the window
+        setSize(700, 800);
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    private String calculateAmountDetails() {
-        return null;
+    private String calculateAmountDetails(double numberOfDays, double noOfBeds, String roomType) {
+        double totalBill;
+        if (roomType.equalsIgnoreCase("AC")) {
+            roomChargePerDay = 1200.0;
+            double roomCharge = roomChargePerDay * numberOfDays;
+            double bedsCharge = bedsChargePerDay * noOfBeds;
+            double beforeGST =  roomCharge + bedsCharge;
+            double GST = 0.18;
+            totalBill = beforeGST + (beforeGST * GST);
+        } else {
+            roomChargePerDay = 600.0;
+            double roomCharge = roomChargePerDay * numberOfDays;
+            double bedsCharge = bedsChargePerDay * noOfBeds;
+            double beforeGST =  roomCharge + bedsCharge;
+            double GST = 0.18;
+            totalBill = beforeGST + (beforeGST * GST);
+        }
+        return new String(totalBill+"");
     }
     public static void main(String[] args) {
         new BillDetails();
