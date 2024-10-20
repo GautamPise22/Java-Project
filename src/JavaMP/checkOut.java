@@ -126,7 +126,7 @@ public class checkOut extends JFrame implements ActionListener {
                                 }
 
                                 // Update the customer record
-                                String updateCustomerSql = "UPDATE Customer SET OccupiedOrNot = false, CheckoutDate = ?, roomNoAllocated = 0 WHERE c_name = ?";
+                                String updateCustomerSql = "UPDATE Customer SET OccupiedOrNot = false, c_checkOutDate = ?, c_roomNoAllocated = 0 WHERE c_name = ?";
                                 try (PreparedStatement updateCustomerPst = con.prepareStatement(updateCustomerSql)) {
                                     updateCustomerPst.setDate(1, new java.sql.Date(new Date().getTime())); // Current
                                                                                                            // date
@@ -201,7 +201,6 @@ public class checkOut extends JFrame implements ActionListener {
         textField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
         textField.setBackground(Color.LIGHT_GRAY);
         textField.setForeground(Color.BLACK);
-
         return textField;
     }
 
