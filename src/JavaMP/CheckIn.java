@@ -283,8 +283,6 @@ public class CheckIn extends JFrame implements ActionListener {
                         updatePst.setInt(2, roomNo); // Set the room number being updated
                         updatePst.executeUpdate();
                     }
-
-
                     JOptionPane.showMessageDialog(this, "Room allocated successfully! Your Room Number is "+roomNo, "Success", JOptionPane.INFORMATION_MESSAGE);
                 }
             } catch (SQLException e) {
@@ -340,7 +338,4 @@ public class CheckIn extends JFrame implements ActionListener {
             }
         }
     }
-
-    
-    
 }

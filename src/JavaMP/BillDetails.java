@@ -2,25 +2,55 @@ package JavaMP;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class BillDetails extends JFrame {
 
     // Declare all labels as instance variables
-    JLabel billIdDetails, nameDetails, mobileDetails, emailDetails, roomNoDetails, roomTypeDetails, totalBedsDetails, priceDetail, checkInDetails, checkOutDetails, noOfDaysDetails, totalAmountDetails;
-    int roomId;
+    private JLabel billIdDetails, nameDetails, mobileDetails, roomNoDetails, roomTypeDetails, totalBedsDetails, priceDetail, checkInDetails, checkOutDetails, noOfDaysDetails, totalAmountDetails;
+    int roomNo;
 
     public BillDetails() {
         // Set the title of the JFrame
         super("Hotel Bill");
 
         // JOptionPane
-        roomId = Integer.parseInt(JOptionPane.showInputDialog("What is your room id?"));
+        roomNo = Integer.parseInt(JOptionPane.showInputDialog("What is your Room Number?"));
 
         // Create a JPanel with a GridBagLayout for structured placement
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(6, 6, 6, 6); // More padding for better spacing
         gbc.fill = GridBagConstraints.HORIZONTAL; // Fill horizontally
+
+        // Database connection
+        String url = "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12737707";
+        String user = "sql12737707";
+        String password = "1FaNC3IdnW";
+
+        try {
+            // Select Query for Details of Users
+            String selectForCustomerDetails = "Select c_name, c_mobileNo, c_roomType, c_noOfBeds, c_checkInDate, c_checkOutDate, c_noOfDays from Customer where c_roomNoAllocated = "+roomNo+";";
+            Connection con = DriverManager.getConnection(url, user, password);
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(selectForCustomerDetails);
+
+            while (rs.next()) {
+                nameDetails = new JLabel(rs.getString("c_name"));
+                mobileDetails = new JLabel(rs.getString("c_mobileNo"));
+                roomNoDetails = new JLabel(roomNo +"");
+                roomTypeDetails = new JLabel(rs.getString("c_roomType"));
+                totalBedsDetails = new JLabel(rs.getString("c_noOfBeds"));
+                checkInDetails = new JLabel(rs.getDate("c_checkInDate")+"");
+                checkOutDetails = new JLabel(rs.getDate("c_checkOutDate")+"");
+                noOfDaysDetails = new JLabel(rs.getInt("c_noOfDays")+"");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         // Increase font size for all components
         Font largeFont = new Font("Arial", Font.PLAIN, 18); // Font with size 18
@@ -67,7 +97,6 @@ public class BillDetails extends JFrame {
         panel.add(nameLabel, gbc);
 
         // Customer Name Details Label
-        nameDetails = new JLabel("Gautam");  // Placeholder value
         nameDetails.setFont(largeFont);
         gbc.gridx++;
         panel.add(nameDetails, gbc);
@@ -80,14 +109,11 @@ public class BillDetails extends JFrame {
         panel.add(mobileLabel, gbc);
 
         // Customer Mobile Details Label
-        mobileDetails = new JLabel("1234567899");  // Placeholder value
         mobileDetails.setFont(largeFont);
         gbc.gridx++;
         panel.add(mobileDetails, gbc);
 
         gbc.gridx = 0;
-
-
 
         // Separator
         JLabel separator2 = new JLabel("**********************************************", SwingConstants.CENTER);
@@ -110,7 +136,6 @@ public class BillDetails extends JFrame {
         panel.add(roomNumberLabel, gbc);
 
         // Room Number Details Label
-        roomNoDetails = new JLabel("1");  // Placeholder value
         roomNoDetails.setFont(largeFont);
         gbc.gridx++;
         panel.add(roomNoDetails, gbc);
@@ -123,7 +148,6 @@ public class BillDetails extends JFrame {
         panel.add(roomTypeLabel, gbc);
 
         // Room Type Details Label
-        roomTypeDetails = new JLabel("AC");  // Placeholder value
         roomTypeDetails.setFont(largeFont);
         gbc.gridx++;
         panel.add(roomTypeDetails, gbc);
@@ -136,7 +160,6 @@ public class BillDetails extends JFrame {
         panel.add(bedTypeLabel, gbc);
 
         // Bed Type Details Label
-        totalBedsDetails = new JLabel("Single");  // Placeholder value
         totalBedsDetails.setFont(largeFont);
         gbc.gridx++;
         panel.add(totalBedsDetails, gbc);
@@ -149,7 +172,6 @@ public class BillDetails extends JFrame {
         panel.add(checkInLabel, gbc);
 
         // Check In Details Label
-        checkInDetails = new JLabel("2022-05-08");  // Placeholder value
         checkInDetails.setFont(largeFont);
         gbc.gridx++;
         panel.add(checkInDetails, gbc);
@@ -162,7 +184,6 @@ public class BillDetails extends JFrame {
         panel.add(checkOutLabel, gbc);
 
         // Check Out Details Label
-        checkOutDetails = new JLabel("2022-05-09");  // Placeholder value
         checkOutDetails.setFont(largeFont);
         gbc.gridx++;
         panel.add(checkOutDetails, gbc);
@@ -175,7 +196,6 @@ public class BillDetails extends JFrame {
         panel.add(numberOfDaysLabel, gbc);
 
         // Number of Days Details Label
-        noOfDaysDetails = new JLabel("1");  // Placeholder value
         noOfDaysDetails.setFont(largeFont);
         gbc.gridx++;
         panel.add(noOfDaysDetails, gbc);
@@ -188,7 +208,7 @@ public class BillDetails extends JFrame {
         panel.add(totalAmountLabel, gbc);
 
         // Total Amount Details Label
-        totalAmountDetails = new JLabel("250.0");  // Placeholder value
+        totalAmountDetails = new JLabel(calculateAmountDetails());  // Placeholder value
         totalAmountDetails.setFont(largeFont);
         gbc.gridx++;
         panel.add(totalAmountDetails, gbc);
@@ -224,11 +244,9 @@ public class BillDetails extends JFrame {
         setVisible(true);
     }
 
-    private void handleRoomId(int roomId) {
-
-
+    private String calculateAmountDetails() {
+        return null;
     }
-
     public static void main(String[] args) {
         new BillDetails();
     }
