@@ -277,9 +277,9 @@ public class CheckIn extends JFrame implements ActionListener {
                 }
             } else {
                 // Database connection
-                String url = "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12737707";
-                String user = "sql12737707";
-                String password = "1FaNC3IdnW";
+                String url = "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12739584";
+                String user = "sql12739584";
+                String password = "UIu7Hjemb9";
 
                 try (Connection con = DriverManager.getConnection(url, user, password)) {
                     int roomNo = getAvailableRoomNumber(con, roomType); // Fetch an available room number

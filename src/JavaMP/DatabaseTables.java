@@ -21,7 +21,7 @@ public class DatabaseTables extends JFrame implements ActionListener{
 
         // Initialize database connection
         try {
-            con = DriverManager.getConnection("jdbc:mysql://sql12.freesqldatabase.com:3306/sql12737707", "sql12737707", "1FaNC3IdnW");
+            con = DriverManager.getConnection("jdbc:mysql://sql12.freesqldatabase.com:3306/sql12739584", "sql12739584", "UIu7Hjemb9");
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Database connection failed.", "Error", JOptionPane.ERROR_MESSAGE);

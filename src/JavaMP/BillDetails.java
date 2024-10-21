@@ -38,9 +38,9 @@ public class BillDetails extends JFrame implements ActionListener{
         gbc.fill = GridBagConstraints.HORIZONTAL; // Fill horizontally
 
         // Database connection
-        String url = "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12737707";
-        String user = "sql12737707";
-        String password = "1FaNC3IdnW";
+        String url = "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12739584";
+        String user = "sql12739584";
+        String password = "UIu7Hjemb9";
 
         
         Connection con = null;
@@ -75,7 +75,7 @@ public class BillDetails extends JFrame implements ActionListener{
                     "Database Error", JOptionPane.ERROR_MESSAGE);
         }
         catch (NullPointerException e) {
-            JOptionPane.showMessageDialog(this, "Invalid Bill Number",
+            JOptionPane.showMessageDialog(this, "No customer found for Bill number: " + billNo,
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
 
