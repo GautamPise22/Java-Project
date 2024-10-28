@@ -35,7 +35,7 @@ public class CheckIn extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
 
         // Load and set the initial background image
-        ImageIcon originalImage = new ImageIcon("images/checkInBackground.png");
+        ImageIcon originalImage = new ImageIcon("images\\checkInback.png");
         background = new JLabel(
                 new ImageIcon(originalImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH)));
         background.setBounds(0, 0, getWidth(), getHeight());

@@ -30,7 +30,7 @@ public class checkOut extends JFrame implements ActionListener {
         setLayout(null); // Using null layout
 
         // Load and set background image
-        ImageIcon originalImage = new ImageIcon("images\\checkouthotel.png");
+        ImageIcon originalImage = new ImageIcon("images\\checkOutback.png");
         bg = new JLabel(
                 new ImageIcon(originalImage.getImage().getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH)));
         bg.setBounds(0, 0, getWidth(), getHeight());
